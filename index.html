@@ -27,7 +27,7 @@
             <button onclick="switchTab('admin')" id="btn-admin" class="hidden px-6 py-2.5 bg-amber-600 text-white rounded-lg font-bold shadow">⚙️ 上架管理後台</button>
         </div>
 
-        <!-- 嚴格單一品牌分類過濾列 (同時控制賣場與查價) -->
+        <!-- 嚴格單一品牌分類過濾列 -->
         <div id="category-bar" class="flex flex-wrap justify-center gap-2 mb-6">
             <button onclick="filterCategory('all')" data-cat="all" class="cat-btn px-4 py-1.5 bg-blue-600 text-white text-sm rounded-full font-medium shadow-sm transition">全部品牌</button>
             <button onclick="filterCategory('TOMICA')" data-cat="TOMICA" class="cat-btn px-4 py-1.5 bg-white text-slate-700 border border-slate-200 text-sm rounded-full font-medium hover:bg-slate-100 transition">TOMICA (一般紅白盒)</button>
@@ -38,7 +38,7 @@
             <button onclick="filterCategory('其他廠牌')" data-cat="其他廠牌" class="cat-btn px-4 py-1.5 bg-white text-slate-700 border border-slate-200 text-sm rounded-full font-medium hover:bg-slate-100 transition">其他廠牌</button>
         </div>
 
-        <!-- 查價專區 (支援文字、圖片貼上、單一品牌嚴格過濾、照片展示) -->
+        <!-- 查價專區 -->
         <div id="tab-pricing" class="space-y-4 max-w-4xl mx-auto">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
@@ -46,18 +46,16 @@
                     <span id="current-brand-badge" class="text-xs bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-bold border border-blue-200">目前篩選品牌：全部品牌</span>
                 </div>
                 
-                <!-- 1. 文字搜尋框 -->
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1">🔎 文字 / 標題智慧搜尋（自動連動上方所選品牌）</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">🔎 文字 / 標題智慧搜尋（自動對應 A 欄編號與雲端資料）</label>
                     <div class="relative">
-                        <input type="text" id="search-input" placeholder="例如輸入：閃電麥坤、脫線、消防車 或貼上日拍標題..." class="w-full p-3.5 pl-4 pr-20 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner" oninput="searchData()">
+                        <input type="text" id="search-input" placeholder="例如輸入：閃電麥坤、脫線、編號 1 或是車名..." class="w-full p-3.5 pl-4 pr-20 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner" oninput="searchData()">
                         <button onclick="clearSearch()" class="absolute right-3 top-3 px-3 py-1.5 bg-slate-100 text-slate-600 text-xs rounded-lg hover:bg-slate-200 font-bold">清除</button>
                     </div>
                 </div>
 
-                <!-- 2. 照片複製貼上 / 上傳找車區 -->
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1">📸 照片複製貼上找車 (點下方框框按 Ctrl+V 貼上截圖，或選擇照片檔)</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">📸 照片複製貼上找車 (點下方框框按 Ctrl+V 貼上截圖，或選擇照片)</label>
                     <div id="search-paste-zone" contenteditable="true" class="w-full h-24 border-2 border-dashed border-indigo-300 rounded-xl p-3 text-xs text-indigo-600 flex flex-col items-center justify-center bg-indigo-50/40 hover:bg-indigo-50/70 focus:border-indigo-500 focus:outline-none cursor-pointer transition">
                         <span class="font-bold">👉 點擊此處並按 Ctrl+V 直接貼上車子照片進行比對</span>
                         <span class="text-[11px] text-slate-400 mt-1">（支援截圖直接貼上，或使用下方按鈕上傳檔案）</span>
@@ -68,16 +66,15 @@
                     </div>
                 </div>
 
-                <!-- 搜尋結果顯示區 (含照片展示) -->
                 <div id="search-result" class="space-y-3 mt-4 pt-2">
                     <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl">
-                        <p class="text-xs text-amber-800 font-bold">💡 提示：您可以先點選上方的「單一品牌」，再輸入關鍵字或貼上照片搜尋！管理員登入後可直接為每筆紀錄貼上實拍照片。</p>
+                        <p class="text-xs text-amber-800 font-bold">💡 提示：系統已自動對應您的 A 欄編號與雲端成交紀錄。若有需要也可以隨時用管理員身分幫特定車款綁定照片！</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 買車 / 現貨賣場專區 -->
+        <!-- 現貨賣場專區 -->
         <div id="tab-shop" class="hidden space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="shop-product-grid"></div>
         </div>
@@ -148,7 +145,7 @@
         </div>
     </div>
 
-    <!-- 管理員為雲端紀錄補貼照片的彈跳視窗 -->
+    <!-- 補貼照片彈跳視窗 -->
     <div id="photo-modal" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50 p-4">
         <div class="bg-white p-6 rounded-2xl max-w-md w-full shadow-xl space-y-4">
             <h3 class="text-lg font-bold text-slate-800">🖼️ 為車款補上/更換實拍照片</h3>
@@ -174,10 +171,8 @@
     </div>
 
     <script>
-        // Google 試算表公開 CSV 連結
         const cloudCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTItsSiLskQi5hiYkIyL34MQgMuGGU2NuzSyOVp94tKBGyJqqIEs_IkN6Ez0fjhuBjNG4GIQ9MS_ZqN/pub?gid=680043717&single=true&output=csv";
 
-        // 讀取存在瀏覽器本地的車款照片庫與上架商品
         let savedRecordPhotos = JSON.parse(localStorage.getItem('ruden_car_photos') || '{}');
         let shopProducts = JSON.parse(localStorage.getItem('ruden_shop_products') || '[]');
         if (shopProducts.length === 0) {
@@ -188,7 +183,7 @@
 
         let cloudPricingData = [];
         let isLoggedIn = false;
-        let currentFilter = 'all'; // 目前選擇的品牌
+        let currentFilter = 'all';
         let uploadedImageBase64 = "";
         let searchImageBase64 = "";
         let currentEditingRecordKey = "";
@@ -201,7 +196,6 @@
         });
 
         function setupPasteListeners() {
-            // 1. 後台上架貼圖
             const pasteZone = document.getElementById('paste-zone');
             if (pasteZone) {
                 pasteZone.addEventListener('paste', (e) => {
@@ -213,7 +207,6 @@
                 });
             }
 
-            // 2. 查價專區：複製貼上照片找車
             const searchPasteZone = document.getElementById('search-paste-zone');
             if (searchPasteZone) {
                 searchPasteZone.addEventListener('paste', (e) => {
@@ -233,7 +226,6 @@
                 });
             }
 
-            // 3. 為單筆成交紀錄補貼照片
             const recordPasteZone = document.getElementById('record-paste-zone');
             if (recordPasteZone) {
                 recordPasteZone.addEventListener('paste', (e) => {
@@ -246,7 +238,6 @@
                 });
             }
 
-            // 後台檔案上傳
             const fileInput = document.getElementById('new-image-file');
             if (fileInput) {
                 fileInput.addEventListener('change', (e) => {
@@ -259,7 +250,6 @@
             }
         }
 
-        // 壓縮並讀取圖片，避免塞爆記憶體
         function handleClipboardImage(e, callback) {
             const items = (e.clipboardData || e.originalEvent.clipboardData).items;
             for (let item of items) {
@@ -293,7 +283,6 @@
             reader.readAsDataURL(file);
         }
 
-        // 讀取 Google 試算表 CSV 資料
         async function loadCloudData() {
             const statusEl = document.getElementById('sync-status');
             try {
@@ -306,24 +295,23 @@
                     if (!lines[i].trim()) continue;
                     const cols = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.trim().replace(/^["']\vert{}["']$/g, ''));
                     
-                    // A(0)=編號, B(1)=來源照片檔名, C(2)=位置, D(3)=品牌, E(4)=系列編號, F(5)=車款名稱, I(8)=車況星等, K(10)=有無盒子, L(11)=成交價, O(14)=備註, S(18)=圖片網址(選填)
                     if (cols.length >= 12 && cols[5]) {
-                        const rowId = cols[0] || String(i);
-                        const carName = cols[5];
+                        const rowId = cols[0] || String(i); // A 欄編號
+                        const carName = cols[5];          // F 欄車名
                         const recordKey = `${rowId}_${carName}`;
                         const sheetImgUrl = (cols[18] && cols[18].startsWith('http')) ? cols[18] : "";
 
                         cloudPricingData.push({
-                            id: rowId,
+                            id: rowId,                       // A 欄編號 (可直接拿來當作對應雲端編號)
                             key: recordKey,
-                            sourcePhoto: cols[1] || "",      // B 欄: 來源照片編號
-                            pos: cols[2] || "",              // C 欄: 位置 (左/中/右)
+                            sourcePhoto: cols[1] || "",      // B 欄
+                            pos: cols[2] || "",              // C 欄
                             category: cols[3] || "其他廠牌",  // D 欄: 品牌
-                            seriesNum: cols[4] || "",        // E 欄: 系列編號
-                            name: carName,                   // F 欄: 車款名稱
-                            condition: cols[8] || "",        // I 欄: 車況星等
-                            hasBox: cols[10] || "",          // K 欄: 有無盒子
-                            price: cols[11] || "0",          // L 欄: 成交價
+                            seriesNum: cols[4] || "",        // E 欄
+                            name: carName,                   // F 欄: 車名
+                            condition: cols[8] || "",        // I 欄
+                            hasBox: cols[10] || "",          // K 欄
+                            price: cols[11] || "0",          // L 欄: 價格
                             desc: cols[14] || "",            // O 欄: 備註
                             image: savedRecordPhotos[recordKey] || sheetImgUrl || ""
                         });
@@ -338,13 +326,11 @@
             }
         }
 
-        // 嚴格單一品牌分類判斷函式
         function isStrictCategoryMatch(itemCategory, selectedFilter) {
             if (selectedFilter === 'all') return true;
             const cat = (itemCategory || '').trim().toUpperCase();
             const filter = selectedFilter.trim().toUpperCase();
 
-            // 若選擇一般「TOMICA」，嚴格只顯示純 TOMICA，排除 Cars TOMICA 等子品牌
             if (filter === 'TOMICA') {
                 return cat === 'TOMICA' || cat === '多美';
             }
@@ -367,11 +353,8 @@
             return cat === filter;
         }
 
-        // 切換上方品牌按鈕
         function filterCategory(category) {
             currentFilter = category;
-            
-            // 更新按鈕外觀
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 if (btn.getAttribute('data-cat') === category) {
                     btn.className = "cat-btn px-4 py-1.5 bg-blue-600 text-white text-sm rounded-full font-medium shadow-sm transition";
@@ -380,11 +363,7 @@
                 }
             });
 
-            // 更新查價區右上角的目前篩選品牌提示
-            const badge = document.getElementById('current-brand-badge');
-            badge.textContent = `目前篩選品牌：${category === 'all' ? '全部品牌' : category}`;
-
-            // 重新執行賣場渲染與查價過濾
+            document.getElementById('current-brand-badge').textContent = `目前篩選品牌：${category === 'all' ? '全部品牌' : category}`;
             renderShop();
             
             const rawInput = document.getElementById('search-input').value.trim();
@@ -397,26 +376,22 @@
             }
         }
 
-        // 文字智慧搜尋（嚴格搭配單一品牌篩選）
         function searchData() {
             let rawInput = document.getElementById('search-input').value.trim().toLowerCase();
             const resultDiv = document.getElementById('search-result');
             
-            // 若沒有輸入關鍵字，且選在「全部品牌」，顯示預設提示
             if (!rawInput && currentFilter === 'all') {
-                resultDiv.innerHTML = `<div class="p-4 bg-amber-50 border border-amber-200 rounded-xl"><p class="text-xs text-amber-800 font-bold">💡 提示：您可以先點選上方的「單一品牌」，或輸入關鍵字、貼上車子照片來搜尋！</p></div>`;
+                resultDiv.innerHTML = `<div class="p-4 bg-amber-50 border border-amber-200 rounded-xl"><p class="text-xs text-amber-800 font-bold">💡 提示：您可以輸入編號（例如 1）、車名，或點選上方單一品牌進行篩選！</p></div>`;
                 return;
             }
 
             let cleanKeyword = rawInput.replace(/[￥円,\s]/g, '');
-
-            // 第一步：先做嚴格單一品牌過濾
             let brandFiltered = cloudPricingData.filter(item => isStrictCategoryMatch(item.category, currentFilter));
 
-            // 第二步：如果有打字，再過濾文字關鍵字
             let matches = brandFiltered;
             if (rawInput) {
                 matches = brandFiltered.filter(item => 
+                    item.id.toLowerCase() === rawInput ||
                     item.name.toLowerCase().includes(rawInput) || 
                     item.name.toLowerCase().includes(cleanKeyword) ||
                     item.desc.toLowerCase().includes(rawInput) ||
@@ -425,14 +400,10 @@
                 );
             }
 
-            const titleText = rawInput 
-                ? `關鍵字「${rawInput}」 (限定品牌：${currentFilter === 'all' ? '全部' : currentFilter})`
-                : `單一品牌瀏覽：「${currentFilter}」`;
-
+            const titleText = rawInput ? `關鍵字「${rawInput}」` : `單一品牌瀏覽：「${currentFilter}」`;
             displaySearchResults(matches, titleText);
         }
 
-        // 圖片複製貼上搜尋 / 檔案上傳比對
         function handleSearchImageUpload(event) {
             const file = event.target.files[0];
             if (file) {
@@ -454,27 +425,8 @@
         }
 
         function searchByImage(base64Str) {
-            // 先篩選出符合目前上方所選「單一品牌」的車款
             let brandFiltered = cloudPricingData.filter(item => isStrictCategoryMatch(item.category, currentFilter));
-            
-            // 優先找尋已經有相同照片或已補上照片的車款
-            const exactPhotoMatches = brandFiltered.filter(item => item.image === base64Str);
-            const hasPhotoMatches = brandFiltered.filter(item => item.image !== "");
-
-            let finalDisplay = [];
-            let msg = "";
-            if (exactPhotoMatches.length > 0) {
-                finalDisplay = exactPhotoMatches;
-                msg = `📸 圖片精準比對結果 (品牌：${currentFilter === 'all' ? '全部' : currentFilter})`;
-            } else if (hasPhotoMatches.length > 0) {
-                finalDisplay = hasPhotoMatches;
-                msg = `📸 圖片比對結果｜列出已建檔照片之車款供對照 (品牌：${currentFilter === 'all' ? '全部' : currentFilter})`;
-            } else {
-                finalDisplay = brandFiltered.slice(0, 30);
-                msg = `📸 圖片比對結果 (品牌：${currentFilter === 'all' ? '全部' : currentFilter}，您可登入管理員直接將剛才貼上的照片綁定給下方車款！)`;
-            }
-
-            displaySearchResults(finalDisplay, msg);
+            displaySearchResults(brandFiltered.slice(0, 30), `圖片比對結果 (品牌：${currentFilter === 'all' ? '全部' : currentFilter})`);
         }
 
         function resetImageSearch() {
@@ -492,12 +444,11 @@
             resetImageSearch();
         }
 
-        // 渲染查價結果卡片（包含左側車款照片框）
         function displaySearchResults(matches, titleInfo) {
             const resultDiv = document.getElementById('search-result');
 
             if (matches.length === 0) {
-                resultDiv.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-xl"><p class="text-xs text-red-700 font-bold">在「${currentFilter === 'all' ? '全部品牌' : currentFilter}」中找不到符合的車款紀錄。</p></div>`;
+                resultDiv.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-xl"><p class="text-xs text-red-700 font-bold">找不到符合的車款紀錄。</p></div>`;
                 return;
             }
 
@@ -506,7 +457,6 @@
             matches.forEach(item => {
                 const currentImg = savedRecordPhotos[item.key] || item.image;
                 
-                // 左側照片顯示區
                 let photoBoxHtml = '';
                 if (currentImg) {
                     photoBoxHtml = `
@@ -517,8 +467,8 @@
                 } else {
                     photoBoxHtml = `
                         <div class="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 bg-slate-100 border border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center p-2 text-center">
-                            <span class="text-[11px] text-slate-400 font-medium">暫無實拍照</span>
-                            ${item.sourcePhoto ? `<span class="text-[10px] text-slate-400 mt-0.5">來源: ${item.sourcePhoto}${item.pos}</span>` : ''}
+                            <span class="text-[11px] text-slate-400 font-bold">編號 #${item.id}</span>
+                            <span class="text-[10px] text-slate-400 mt-0.5">${item.sourcePhoto || '暫無實拍'}</span>
                             ${isLoggedIn ? `<button onclick="openPhotoModal('${item.key.replace(/'/g, "\\'")}', '${item.name.replace(/'/g, "\\'")}')" class="mt-1.5 px-2 py-1 bg-blue-600 text-white text-[10px] rounded-md font-bold shadow hover:bg-blue-700">➕ 貼上照片</button>` : ''}
                         </div>`;
                 }
@@ -528,18 +478,17 @@
                         ${photoBoxHtml}
                         <div class="flex-grow min-w-0">
                             <div class="flex flex-wrap justify-between items-start gap-2">
-                                <span class="font-bold text-slate-800 text-base">${item.name}</span>
+                                <span class="font-bold text-slate-800 text-base">[編號 #${item.id}] ${item.name}</span>
                                 <span class="text-xs bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-bold flex-shrink-0">${item.category}</span>
                             </div>
                             <div class="text-sm text-slate-600 space-y-1 mt-2">
                                 <p class="text-red-600 font-bold text-base">📌 成交價：NT$ ${item.price}</p>
                                 <p class="text-xs text-slate-500">📦 <b>紀錄備註</b>：${item.desc || '無'}</p>
-                                ${(item.condition || item.hasBox || item.sourcePhoto) ? `
                                 <p class="text-[11px] text-slate-400">
                                     ${item.condition ? `⭐ 車況星等：${item.condition}星 ｜ ` : ''}
                                     ${item.hasBox ? `🎁 盒況：${item.hasBox} ｜ ` : ''}
-                                    ${item.sourcePhoto ? `🖼️ 原圖檔：${item.sourcePhoto} (${item.pos})` : ''}
-                                </p>` : ''}
+                                    ${item.sourcePhoto ? `🖼️ A欄對應編號：${item.id} (${item.sourcePhoto})` : ''}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -548,16 +497,13 @@
             resultDiv.innerHTML = htmlOutput;
         }
 
-        // 點擊放大照片
         function zoomImage(src) {
             document.getElementById('zoom-img').src = src;
             document.getElementById('zoom-modal').classList.remove('hidden');
         }
 
-        // 管理員為雲端紀錄補上照片功能
         function openPhotoModal(recordKey, carName) {
             currentEditingRecordKey = recordKey;
-            // 若剛剛在搜尋框有貼上搜尋圖片，自動帶入方便一鍵綁定！
             tempRecordPhotoBase64 = searchImageBase64 || "";
             document.getElementById('photo-modal-carname').textContent = carName;
             document.getElementById('record-image-file').value = "";
@@ -565,7 +511,7 @@
             if (tempRecordPhotoBase64) {
                 document.getElementById('record-preview-img').src = tempRecordPhotoBase64;
                 document.getElementById('record-preview-wrap').classList.remove('hidden');
-                document.getElementById('record-paste-zone').innerHTML = "✅ 已自動帶入您剛才貼上的照片！可直接點擊「儲存照片」或重新 Ctrl+V 貼上";
+                document.getElementById('record-paste-zone').innerHTML = "✅ 已自動帶入您剛才貼上的照片！可直接點擊「儲存照片」";
             } else {
                 document.getElementById('record-preview-wrap').classList.add('hidden');
                 document.getElementById('record-paste-zone').innerHTML = `
@@ -598,21 +544,19 @@
             savedRecordPhotos[currentEditingRecordKey] = tempRecordPhotoBase64;
             localStorage.setItem('ruden_car_photos', JSON.stringify(savedRecordPhotos));
 
-            // 同步更新記憶體內的資料
             const target = cloudPricingData.find(d => d.key === currentEditingRecordKey);
             if (target) target.image = tempRecordPhotoBase64;
 
             closePhotoModal();
-            searchData(); // 重新整理畫面顯示最新照片
+            searchData();
         }
 
-        // 現貨賣場渲染（同樣遵守嚴格單一品牌篩選）
         function renderShop() {
             const grid = document.getElementById('shop-product-grid');
             const filtered = shopProducts.filter(p => isStrictCategoryMatch(p.category, currentFilter));
             
             if(filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400 bg-white rounded-2xl border border-slate-100">目前「${currentFilter === 'all' ? '全部品牌' : currentFilter}」分類尚無上架現貨商品</div>`;
+                grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400 bg-white rounded-2xl border border-slate-100">目前此分類尚無上架現貨商品</div>`;
                 return;
             }
 
@@ -680,8 +624,8 @@
                 closeLoginModal();
                 document.getElementById('login-btn').outerHTML = `<span class="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-300">👤 管理員：聖引</span>`;
                 document.getElementById('btn-admin').classList.remove('hidden');
-                searchData(); // 重新整理查價列表以顯示「➕ 貼上照片」按鈕
-                alert("管理員登入成功！現在您可以在查價結果中直接為每台車貼上照片，或至上架後台新增現貨。");
+                searchData();
+                alert("管理員登入成功！");
             } else {
                 alert("帳號或密碼錯誤！");
             }
