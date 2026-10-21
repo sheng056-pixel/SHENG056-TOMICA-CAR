@@ -8,7 +8,6 @@
 </head>
 <body class="bg-slate-50 min-h-screen pb-12">
     <div class="max-w-6xl mx-auto p-4">
-        <!-- 頂部標題與登入區 -->
         <header class="flex flex-col md:flex-row justify-between items-center py-6 border-b border-slate-200 mb-6 gap-4">
             <div>
                 <h1 class="text-2xl md:text-3xl font-bold text-slate-800">🚗 Ruden's Mini Car Shop</h1>
@@ -20,260 +19,72 @@
             </div>
         </header>
 
-        <!-- 導覽切換頁籤 -->
         <div class="flex flex-wrap justify-center gap-3 mb-6">
-            <button onclick="switchTab('shop')" id="btn-shop" class="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-bold shadow">🛒 現貨賣場</button>
-            <button onclick="switchTab('pricing')" id="btn-pricing" class="px-6 py-2.5 bg-slate-200 text-slate-700 rounded-lg font-bold">🔍 雲端歷史成交查價</button>
+            <button onclick="switchTab('shop')" id="btn-shop" class="px-6 py-2.5 bg-slate-200 text-slate-700 rounded-lg font-bold">🛒 現貨賣場</button>
+            <button onclick="switchTab('pricing')" id="btn-pricing" class="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-bold shadow">🔍 雲端歷史成交查價</button>
             <button onclick="switchTab('admin')" id="btn-admin" class="hidden px-6 py-2.5 bg-amber-600 text-white rounded-lg font-bold shadow">⚙️ 上架管理後台</button>
         </div>
 
-        <!-- 分類過濾列 -->
-        <div id="category-bar" class="flex flex-wrap justify-center gap-2 mb-6">
-            <button onclick="filterCategory('all')" class="cat-btn px-4 py-1.5 bg-blue-600 text-white text-sm rounded-full font-medium shadow-sm">全部車款</button>
-            <button onclick="filterCategory('TOMICA')" class="cat-btn px-4 py-1.5 bg-white text-slate-700 border border-slate-200 text-sm rounded-full font-medium hover:bg-slate-100">Tomica</button>
-            <button onclick="filterCategory('Mattel')" class="cat-btn px-4 py-1.5 bg-white text-slate-700 border border-slate-200 text-sm rounded-full font-medium hover:bg-slate-100">Mattel Cars</button>
-            <button onclick="filterCategory('Majorette')" class="cat-btn px-4 py-1.5 bg-white text-slate-700 border border-slate-200 text-sm rounded-full font-medium hover:bg-slate-100">Majorette</button>
-            <button onclick="filterCategory('其他廠牌')" class="cat-btn px-4 py-1.5 bg-white text-slate-700 border border-slate-200 text-sm rounded-full font-medium hover:bg-slate-100">其他廠牌</button>
-        </div>
-
-        <!-- 買車 / 賣場專區 -->
-        <div id="tab-shop" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="shop-product-grid"></div>
-        </div>
-
-        <!-- 查價專區 -->
-        <div id="tab-pricing" class="hidden space-y-4 max-w-3xl mx-auto">
+        <div id="tab-pricing" class="space-y-4 max-w-3xl mx-auto">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
                 <h2 class="font-bold text-lg text-slate-800">📊 雲端歷史成交與行情查價中心</h2>
-                
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">文字 / 標題智慧搜尋（自動對應雲端 600+ 筆資料）</label>
                     <div class="relative">
-                        <input type="text" id="search-input" placeholder="貼上日拍標題或輸入車名、系列..." class="w-full p-3.5 pl-4 pr-20 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner" oninput="searchData()">
+                        <input type="text" id="search-input" placeholder="例如輸入：閃電麥坤 或 貼上日拍標題..." class="w-full p-3.5 pl-4 pr-20 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner" oninput="searchData()">
                         <button onclick="document.getElementById('search-input').value=''; searchData();" class="absolute right-3 top-3 px-3 py-1.5 bg-slate-100 text-slate-600 text-xs rounded-lg hover:bg-slate-200">清除</button>
                     </div>
                 </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1">圖片檔比對 (貼上截圖或上傳照片)</label>
-                    <div id="search-paste-zone" contenteditable="true" class="w-full h-24 border-2 border-dashed border-indigo-300 rounded-xl p-2 text-xs text-indigo-500 flex flex-col items-center justify-center bg-indigo-50/50 focus:border-indigo-500 focus:outline-none cursor-pointer">
-                        <span>📸 點此處貼上照片 (Ctrl+V) 或上傳圖片進行比對</span>
-                    </div>
-                    <input type="file" id="search-image-file" accept="image/*" class="mt-2 text-xs text-slate-500" onchange="handleSearchImageUpload(event)">
-                </div>
-
                 <div id="search-result" class="space-y-3 mt-4">
                     <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl">
-                        <p class="text-xs text-amber-800 font-bold">💡 提示：雲端資料已連線成功！您可以輸入關鍵字搜尋您的完整成交紀錄。</p>
+                        <p class="text-xs text-amber-800 font-bold">💡 提示：輸入關鍵字，系統會精準抓取您試算表 F 欄的車名與 L 欄的價格！</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 管理員後台上架專區 -->
-        <div id="tab-admin" class="hidden space-y-4 max-w-xl mx-auto">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h2 class="font-bold text-xl mb-4 text-slate-800">📦 新增現貨商品 (管理員專用)</h2>
-                <form onsubmit="addProduct(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">車款名稱</label>
-                        <input type="text" id="new-name" required placeholder="例如：No.10 Subaru Sambar 吐司麵包車" class="w-full p-3 border border-slate-200 rounded-lg">
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-1">所屬分類</label>
-                            <select id="new-category" class="w-full p-3 border border-slate-200 rounded-lg bg-white">
-                                <option value="TOMICA">Tomica</option>
-                                <option value="Mattel Cars">Mattel Cars</option>
-                                <option value="Majorette">Majorette</option>
-                                <option value="其他廠牌">其他廠牌</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-1">售價 (NT$)</label>
-                            <input type="number" id="new-price" required placeholder="280" class="w-full p-3 border border-slate-200 rounded-lg">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">盒況與車況描述</label>
-                        <input type="text" id="new-desc" placeholder="例如：無盒｜乾淨｜原系列欄: Cars" class="w-full p-3 border border-slate-200 rounded-lg">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">商品照片 (支援檔案上傳或直接貼上圖片)</label>
-                        <input type="file" id="new-image-file" accept="image/*" class="w-full p-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50">
-                        <div id="paste-zone" contenteditable="true" class="w-full h-20 border-2 border-dashed border-slate-300 rounded-lg p-2 mt-2 text-xs text-slate-400 flex items-center justify-center bg-slate-50 focus:outline-none">
-                            點此處並按 Ctrl+V 貼上商品照片
-                        </div>
-                        <div id="image-preview-container" class="mt-2 hidden">
-                            <span class="text-xs text-slate-500">預覽縮圖：</span>
-                            <img id="preview-img" src="" class="h-20 mt-1 rounded-lg border object-cover">
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full py-3 bg-blue-600 text-white font-bold rounded-lg shadow hover:bg-blue-700 transition">確認上架</button>
-                </form>
-            </div>
+        <div id="tab-shop" class="hidden space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="shop-product-grid"></div>
         </div>
-    </div>
-
-    <!-- 登入彈跳視窗 -->
-    <div id="login-modal" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50 p-4">
-        <div class="bg-white p-6 rounded-2xl max-w-sm w-full shadow-xl space-y-4">
-            <h3 class="text-lg font-bold text-slate-800">🔐 管理員登入</h3>
-            <div>
-                <label class="block text-xs font-bold text-slate-600 mb-1">帳號 (ID)</label>
-                <input type="text" id="login-id" class="w-full p-2.5 border rounded-lg text-sm" placeholder="請輸入帳號">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-slate-600 mb-1">密碼 (Password)</label>
-                <input type="password" id="login-pwd" class="w-full p-2.5 border rounded-lg text-sm" placeholder="請輸入密碼">
-            </div>
-            <div class="flex justify-end gap-2 pt-2">
-                <button onclick="closeLoginModal()" class="px-4 py-2 bg-slate-200 text-slate-700 text-sm rounded-lg font-bold">取消</button>
-                <button onclick="handleLogin()" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg font-bold shadow">登入</button>
-            </div>
-        </div>
+        <div id="tab-admin" class="hidden space-y-4 max-w-xl mx-auto"></div>
     </div>
 
     <script>
-        // 您的 Google 試算表公開 CSV 連結
         const cloudCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTItsSiLskQi5hiYkIyL34MQgMuGGU2NuzSyOVp94tKBGyJqqIEs_IkN6Ez0fjhuBjNG4GIQ9MS_ZqN/pub?gid=680043717&single=true&output=csv";
-
-        // 現貨賣場預設空陣列（或保留您之前手動加的商品）
-        let shopProducts = [];
-
-        // 雲端歷史成交資料庫
         let cloudPricingData = [];
-
-        let isLoggedIn = false;
-        let currentFilter = 'all';
-        let uploadedImageBase64 = "";
-        let searchImageBase64 = "";
 
         window.addEventListener('DOMContentLoaded', async () => {
             await loadCloudData();
-
-            // 監聽後台圖片貼上
-            const pasteZone = document.getElementById('paste-zone');
-            if (pasteZone) {
-                pasteZone.addEventListener('paste', handlePaste(showPreview, pasteZone));
-            }
-
-            // 監聽查價專區的圖片貼上
-            const searchPasteZone = document.getElementById('search-paste-zone');
-            if (searchPasteZone) {
-                searchPasteZone.addEventListener('paste', (e) => {
-                    const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-                    for (let item of items) {
-                        if (item.type.indexOf('image') === 0) {
-                            const blob = item.getAsFile();
-                            const reader = new FileReader();
-                            reader.onload = function(event) {
-                                searchImageBase64 = event.target.result;
-                                searchPasteZone.innerHTML = `<div class="flex items-center gap-2"><img src="${searchImageBase64}" class="h-12 w-12 object-cover rounded border"><span>✅ 圖片已載入，正在比對...</span></div>`;
-                                searchByImage(searchImageBase64);
-                            };
-                            reader.readAsDataURL(blob);
-                            e.preventDefault();
-                        }
-                    }
-                });
-            }
-
-            // 上傳按鈕監聽
-            document.getElementById('new-image-file').addEventListener('change', handleFileUpload(showPreview));
         });
 
-        // 輔助函式：處理貼上
-        function handlePaste(callback, element) {
-            return function(e) {
-                const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-                for (let item of items) {
-                    if (item.type.indexOf('image') === 0) {
-                        const blob = item.getAsFile();
-                        const reader = new FileReader();
-                        reader.onload = function(event) {
-                            uploadedImageBase64 = event.target.result;
-                            callback(uploadedImageBase64);
-                            if(element) element.innerHTML = "✅ 圖片已成功貼上！";
-                        };
-                        reader.readAsDataURL(blob);
-                        e.preventDefault();
-                    }
-                }
-            }
-        }
-
-        function handleFileUpload(callback) {
-            return function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        uploadedImageBase64 = event.target.result;
-                        callback(uploadedImageBase64);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-        }
-
-        // ==========================================
-        // 核心修正：依照截圖欄位順序解析 CSV
-        // ==========================================
+        // 核心修正：依照你的截圖，完美對齊 D欄、F欄、L欄、O欄
         async function loadCloudData() {
             const statusEl = document.getElementById('sync-status');
             try {
                 const response = await fetch(cloudCsvUrl);
                 const csvText = await response.text();
-                
                 const lines = csvText.split('\n');
                 cloudPricingData = [];
                 
-                // 從 i=1 開始跑，避開第一行的標題列
                 for (let i = 1; i < lines.length; i++) {
                     if (!lines[i].trim()) continue;
-                    
-                    // 使用正規表達式切分 CSV，避免備註欄位裡的逗號造成錯亂
                     const cols = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.trim().replace(/^["']\vert{}["']$/g, ''));
                     
-                    // 根據截圖：D(3)=品牌, F(5)=車名, L(11)=價格, O(14)=備註
-                    // 只要這一列至少有到 L 欄 (長度>11) 就處理
+                    // 確保讀到 L 欄 (索引11) 且 F 欄 (索引5) 真的有車名才寫入
                     if (cols.length >= 12 && cols[5]) {
                         cloudPricingData.push({
-                            category: cols[3] || "未分類",     // 品牌
-                            name: cols[5],                   // 車款名稱
-                            price: cols[11] || "0",          // 成交價
-                            desc: cols[14] || ""             // 備註
+                            category: cols[3] || "未分類",     // D 欄: 品牌
+                            name: cols[5],                   // F 欄: 車款名稱
+                            price: cols[11] || "0",          // L 欄: 成交價
+                            desc: cols[14] || ""             // O 欄: 備註
                         });
                     }
                 }
                 statusEl.textContent = `✅ 雲端同步完成 (${cloudPricingData.length} 筆)`;
                 statusEl.className = "text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-300 font-bold";
             } catch (error) {
-                console.error("雲端載入失敗:", error);
-                statusEl.textContent = "⚠️ 雲端同步失敗（使用預設資料）";
+                statusEl.textContent = "⚠️ 雲端同步失敗";
                 statusEl.className = "text-xs text-red-600 bg-red-50 px-2.5 py-1 rounded-lg border border-red-200";
-            }
-        }
-
-        function showPreview(src) {
-            const container = document.getElementById('image-preview-container');
-            const img = document.getElementById('preview-img');
-            img.src = src;
-            container.classList.remove('hidden');
-        }
-
-        function handleSearchImageUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    searchImageBase64 = e.target.result;
-                    const searchPasteZone = document.getElementById('search-paste-zone');
-                    searchPasteZone.innerHTML = `<div class="flex items-center gap-2"><img src="${searchImageBase64}" class="h-12 w-12 object-cover rounded border"><span>✅ 圖片已載入，正在比對相似車款...</span></div>`;
-                    searchByImage(searchImageBase64);
-                };
-                reader.readAsDataURL(file);
             }
         }
 
@@ -283,104 +94,54 @@
             document.getElementById('tab-admin').classList.add('hidden');
             document.getElementById('btn-shop').className = 'px-6 py-2.5 bg-slate-200 text-slate-700 rounded-lg font-bold';
             document.getElementById('btn-pricing').className = 'px-6 py-2.5 bg-slate-200 text-slate-700 rounded-lg font-bold';
-            document.getElementById('btn-admin').className = 'hidden';
-            if(isLoggedIn) document.getElementById('btn-admin').className = 'px-6 py-2.5 bg-amber-600 text-white rounded-lg font-bold shadow';
 
             if (tab === 'shop') {
                 document.getElementById('tab-shop').classList.remove('hidden');
                 document.getElementById('btn-shop').className = 'px-6 py-2.5 bg-blue-600 text-white rounded-lg font-bold shadow';
-                renderShop();
             } else if (tab === 'pricing') {
                 document.getElementById('tab-pricing').classList.remove('hidden');
                 document.getElementById('btn-pricing').className = 'px-6 py-2.5 bg-blue-600 text-white rounded-lg font-bold shadow';
-            } else if (tab === 'admin' && isLoggedIn) {
-                document.getElementById('tab-admin').classList.remove('hidden');
-                document.getElementById('btn-admin').className = 'px-6 py-2.5 bg-amber-600 text-white rounded-lg font-bold shadow';
             }
         }
 
-        function filterCategory(category) {
-            currentFilter = category;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                if(btn.textContent.includes(category) || (category === 'all' && btn.textContent.includes('全部'))) {
-                    btn.className = "cat-btn px-4 py-1.5 bg-blue-600 text-white text-sm rounded-full font-medium shadow-sm";
-                } else {
-                    btn.className = "cat-btn px-4 py-1.5 bg-white text-slate-700 border border-slate-200 text-sm rounded-full font-medium hover:bg-slate-100";
-                }
-            });
-            renderShop();
-        }
-
-        function renderShop() {
-            const grid = document.getElementById('shop-product-grid');
-            const filtered = currentFilter === 'all' ? shopProducts : shopProducts.filter(p => p.category.includes(currentFilter));
+        function searchData() {
+            let rawInput = document.getElementById('search-input').value.trim().toLowerCase();
+            const resultDiv = document.getElementById('search-result');
             
-            if(filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400">目前此分類尚無上架現貨商品</div>`;
+            if (!rawInput) {
+                resultDiv.innerHTML = `<div class="p-4 bg-amber-50 border border-amber-200 rounded-xl"><p class="text-xs text-amber-800 font-bold">💡 請輸入關鍵字搜尋您的完整成交紀錄。</p></div>`;
                 return;
             }
 
-            let html = '';
-            filtered.forEach(p => {
-                let imgHtml = p.image 
-                    ? `<img src="${p.image}" class="w-full h-40 object-cover rounded-lg mb-3 border">`
-                    : `<div class="w-full h-40 bg-slate-100 rounded-lg mb-3 flex items-center justify-center text-slate-400 text-xs">無商品照片</div>`;
+            let cleanKeyword = rawInput.replace(/[￥円,\s]/g, '');
+            const matches = cloudPricingData.filter(item => 
+                item.name.toLowerCase().includes(rawInput) || 
+                item.name.toLowerCase().includes(cleanKeyword) ||
+                item.desc.toLowerCase().includes(rawInput)
+            );
 
-                html += `
-                    <div class="bg-white border border-slate-100 p-4 rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition">
-                        <div>
-                            ${imgHtml}
-                            <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-medium">${p.category}</span>
-                            <h3 class="font-bold text-slate-800 mt-2 text-base">${p.name}</h3>
-                            <p class="text-xs text-slate-500 mt-1">${p.desc}</p>
+            if (matches.length === 0) {
+                resultDiv.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-xl"><p class="text-xs text-red-700 font-bold">在雲端紀錄中找不到符合的車款。</p></div>`;
+                return;
+            }
+
+            let htmlOutput = `<p class="text-xs text-slate-500 mb-2">🔎 找到 ${matches.length} 筆成交紀錄：</p>`;
+            matches.forEach(item => {
+                htmlOutput += `
+                    <div class="p-4 border rounded-xl bg-blue-50/40 space-y-1 mb-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-800">${item.name}</span>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-medium">${item.category}</span>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center">
-                            <span class="text-red-600 font-bold text-lg">NT$ ${p.price}</span>
-                            <button onclick="alert('已加入購物車！')" class="px-3.5 py-1.5 bg-blue-500 text-white text-xs rounded-lg font-medium hover:bg-blue-600">加入購物車</button>
+                        <div class="text-sm text-slate-600 space-y-0.5 pt-1">
+                            <p>📌 <b>成交價</b>：NT$ ${item.price}</p>
+                            <p>📦 <b>紀錄備註</b>：${item.desc}</p>
                         </div>
                     </div>
                 `;
             });
-            grid.innerHTML = html;
+            resultDiv.innerHTML = htmlOutput;
         }
-
-        function openLoginModal() { document.getElementById('login-modal').classList.remove('hidden'); }
-        function closeLoginModal() { document.getElementById('login-modal').classList.add('hidden'); }
-
-        function handleLogin() {
-            const id = document.getElementById('login-id').value.trim();
-            const pwd = document.getElementById('login-pwd').value.trim();
-
-            if (id === "聖引" && pwd === "0973117607*") {
-                isLoggedIn = true;
-                closeLoginModal();
-                document.getElementById('auth-container').innerHTML = `<span class="text-sm font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200">👤 管理員：聖引 已登入</span>`;
-                switchTab('admin');
-                alert("管理員登入成功！已解鎖上架後台。");
-            } else {
-                alert("帳號或密碼錯誤！");
-            }
-        }
-
-        function addProduct(event) {
-            event.preventDefault();
-            const name = document.getElementById('new-name').value;
-            const category = document.getElementById('new-category').value;
-            const price = Number(document.getElementById('new-price').value);
-            const desc = document.getElementById('new-desc').value;
-
-            shopProducts.unshift({ 
-                id: Date.now(), 
-                name, 
-                category, 
-                price, 
-                desc, 
-                image: uploadedImageBase64 
-            });
-
-            alert("現貨商品上架成功！");
-            document.getElementById('new-name').value = '';
-            document.getElementById('new-price').value = '';
-            document.getElementById('new-desc').value = '';
-            document.getElementById('new-image-file').value = '';
-            document.getElementById('paste-zone').innerHTML = "點此處並按 Ctrl+V 貼上商品照片
+    </script>
+</body>
+</html>
