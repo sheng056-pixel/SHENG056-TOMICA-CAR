@@ -14,12 +14,12 @@
             <div>
                 <div class="flex items-center gap-2">
                     <h1 class="text-2xl md:text-3xl font-bold text-slate-800">🚗 Ruden's Mini Car Shop</h1>
-                    <span class="text-[11px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">v3.0 免彈窗版</span>
+                    <span class="text-[11px] bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-bold border border-emerald-300">v4.0 純淨無亂碼版</span>
                 </div>
                 <p class="text-sm text-slate-500 mt-1">AI 視覺以圖搜車查價系統 ＆ 現貨模型車賣場</p>
             </div>
             <div id="auth-container" class="flex flex-wrap items-center gap-2">
-                <span id="sync-status" class="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">⏳ 正在同步雲端成交紀錄...</span>
+                <span id="sync-status" class="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">⏳ 正在連線試算表資料庫...</span>
                 <button onclick="openAiKeyModal()" class="px-3 py-2 bg-slate-200 text-slate-700 text-xs rounded-lg font-bold hover:bg-slate-300 transition">⚙️ 金鑰設定</button>
                 <button id="login-btn" onclick="openLoginModal()" class="px-4 py-2 bg-slate-800 text-white text-sm rounded-lg font-bold shadow hover:bg-slate-700 transition">🔐 管理員登入</button>
             </div>
@@ -56,7 +56,7 @@
                     <label class="block text-sm font-bold text-indigo-900 mb-2">📸 步驟一：貼上或上傳車款照片，自動辨識並從成交紀錄找出相似車款！</label>
                     <div id="search-paste-zone" contenteditable="true" class="w-full min-h-[110px] border-2 border-dashed border-indigo-400 rounded-xl p-4 text-xs text-indigo-700 flex flex-col items-center justify-center bg-white hover:bg-indigo-50/40 focus:border-indigo-600 focus:outline-none cursor-pointer transition shadow-sm">
                         <span class="font-bold text-sm">👉 點擊此框並按 Ctrl+V 直接貼上車子截圖 / 照片</span>
-                        <span class="text-xs text-slate-500 mt-1">系統會自動分析車款特徵、顏色、型號，並從雲端紀錄進行模糊比對！</span>
+                        <span class="text-xs text-slate-500 mt-1">系統會自動分析車款特徵、顏色、車種，並從雲端紀錄進行模糊比對！</span>
                     </div>
                     <div class="mt-3 flex flex-wrap items-center justify-between gap-2">
                         <div class="flex items-center gap-2">
@@ -73,7 +73,7 @@
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">🔎 或直接輸入文字 / 編號模糊搜尋</label>
                     <div class="relative">
-                        <input type="text" id="search-input" placeholder="例如輸入：閃電麥坤、脫線、路易吉、消防車、編號 19..." class="w-full p-3.5 pl-4 pr-20 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner" oninput="searchData()">
+                        <input type="text" id="search-input" placeholder="例如輸入：閃電麥坤、脫線、工程車、消防車、編號 19..." class="w-full p-3.5 pl-4 pr-20 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner" oninput="searchData()">
                         <button onclick="clearSearch()" class="absolute right-3 top-3 px-3 py-1.5 bg-slate-100 text-slate-600 text-xs rounded-lg hover:bg-slate-200 font-bold">清除</button>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                 <!-- 搜尋結果顯示區 -->
                 <div id="search-result" class="space-y-3 mt-4 pt-2">
                     <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl">
-                        <p class="text-xs text-amber-800 font-bold">💡 提示：直接貼上一張模型車照片，系統就會幫您認出車款特徵，並用模糊比對跳出最接近的幾款歷史成交車（含照片、名稱與成交價格）！</p>
+                        <p class="text-xs text-amber-800 font-bold">💡 提示：直接貼上一張模型車照片，系統就會幫您分析車款特徵，並跳出最接近的幾款歷史成交車（含照片、名稱與成交價格）！</p>
                     </div>
                 </div>
             </div>
@@ -138,19 +138,19 @@
         </div>
     </div>
 
-    <!-- AI 金鑰設定 Modal (無任何阻擋檢查、無彈跳視窗) -->
+    <!-- AI 金鑰設定 Modal -->
     <div id="ai-key-modal" class="fixed inset-0 bg-black/50 hidden flex justify-center items-center z-50 p-4">
         <div class="bg-white p-6 rounded-2xl max-w-md w-full shadow-xl space-y-4">
-            <h3 class="text-lg font-bold text-slate-800">⚙️ 金鑰設定（已自動內建）</h3>
+            <h3 class="text-lg font-bold text-slate-800">⚙️ 金鑰設定</h3>
             <p class="text-xs text-slate-600 leading-relaxed">
-                系統已預設載入您的金鑰，無須重複設定。若日後更換金鑰可直接貼於下方：
+                系統已預設內建金鑰與本機視覺辨識引擎。若需更換金鑰可直接貼於下方：
             </p>
             <div>
-                <input type="text" id="gemini-api-key-input" class="w-full p-2.5 border rounded-lg text-sm font-mono" placeholder="貼上任何格式之金鑰...">
+                <input type="text" id="gemini-api-key-input" class="w-full p-2.5 border rounded-lg text-sm font-mono" placeholder="貼上金鑰...">
             </div>
             <div class="flex justify-end gap-2 pt-2">
                 <button onclick="document.getElementById('ai-key-modal').classList.add('hidden')" class="px-4 py-2 bg-slate-200 text-slate-700 text-sm rounded-lg font-bold">關閉</button>
-                <button onclick="saveAiKey()" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg font-bold shadow">直接儲存（不彈窗）</button>
+                <button onclick="saveAiKey()" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg font-bold shadow">儲存</button>
             </div>
         </div>
     </div>
@@ -180,9 +180,14 @@
     </div>
 
     <script>
-        const cloudCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTItsSiLskQi5hiYkIyL34MQgMuGGU2NuzSyOVp94tKBGyJqqIEs_IkN6Ez0fjhuBjNG4GIQ9MS_ZqN/pub?gid=680043717&single=true&output=csv";
+        // 多重備援通道：優先讀取正確的 gid=331429523 與預設首頁，徹底避開壞掉的 AppSheet 分頁
+        const SHEET_URLS = [
+            "https://docs.google.com/spreadsheets/d/106T9cu6SOHv_CI2XtniEt-4LV90GMng19Ps9S1rmY-k/gviz/tq?tqx=out:csv&gid=331429523",
+            "https://docs.google.com/spreadsheets/d/e/2PACX-1vTItsSiLskQi5hiYkIyL34MQgMuGGU2NuzSyOVp94tKBGyJqqIEs_IkN6Ez0fjhuBjNG4GIQ9MS_ZqN/pub?gid=331429523&single=true&output=csv",
+            "https://docs.google.com/spreadsheets/d/e/2PACX-1vTItsSiLskQi5hiYkIyL34MQgMuGGU2NuzSyOVp94tKBGyJqqIEs_IkN6Ez0fjhuBjNG4GIQ9MS_ZqN/pub?output=csv",
+            "https://docs.google.com/spreadsheets/d/e/2PACX-1vTItsSiLskQi5hiYkIyL34MQgMuGGU2NuzSyOVp94tKBGyJqqIEs_IkN6Ez0fjhuBjNG4GIQ9MS_ZqN/pub?gid=680043717&single=true&output=csv"
+        ];
         
-        // 已直接內建您的金鑰，完全免手動輸入！
         const DEFAULT_GEMINI_API_KEY = "AQ.Ab8RN6Kz9kRcPvMHMdfK_6uBWGFqh7uYOOE1UmT8NWAk7HibBw"; 
 
         let savedRecordPhotos = JSON.parse(localStorage.getItem('ruden_car_photos') || '{}');
@@ -214,14 +219,10 @@
             document.getElementById('ai-key-modal').classList.remove('hidden');
         }
 
-        // 完全移除任何格式檢查與 alert 視窗，按儲存直接關閉並生效！
         function saveAiKey() {
             const key = document.getElementById('gemini-api-key-input').value.trim();
-            if (key) {
-                localStorage.setItem('ruden_gemini_api_key', key);
-            } else {
-                localStorage.removeItem('ruden_gemini_api_key');
-            }
+            if (key) localStorage.setItem('ruden_gemini_api_key', key);
+            else localStorage.removeItem('ruden_gemini_api_key');
             document.getElementById('ai-key-modal').classList.add('hidden');
             if (searchImageBase64) triggerAiImageSearch(searchImageBase64);
         }
@@ -292,59 +293,99 @@
             reader.readAsDataURL(file);
         }
 
-        async function loadCloudData() {
-            const statusEl = document.getElementById('sync-status');
-            try {
-                const response = await fetch(cloudCsvUrl);
-                const csvText = await response.text();
+        // ==========================================================
+        // 終極防亂碼引擎：必須通過「純數字編號 + 純數字價格 + 無程式碼字元」三重鐵門
+        // ==========================================================
+        function parseValidRows(csvText) {
+            // 若整個檔案其實是 Google 登入/錯誤 HTML 網頁，直接退貨
+            if (csvText.includes('<!DOCTYPE html>') || csvText.includes('<html') || csvText.includes('window.WIZ_global_data')) {
+                return [];
+            }
 
-                const parsed = Papa.parse(csvText, { skipEmptyLines: true });
-                const rows = parsed.data;
-                cloudPricingData = [];
+            const parsed = Papa.parse(csvText, { skipEmptyLines: true });
+            const rows = parsed.data;
+            const validList = [];
+
+            for (let i = 0; i < rows.length; i++) {
+                const cols = rows[i].map(c => String(c || "").trim());
+                if (cols.length < 12) continue;
+
+                const rowId = cols[0].replace(/\.0+$/, ""); // 處理可能出現的 1.0 -> 1
+                const carName = cols[5];
+                const rawPrice = cols[11].replace(/[,$\sNT元]/g, "");
+
+                // 鐵門 1：A 欄編號必須是 1~99999 的純數字！(徹底殺死 #initial-scale 或 #h:"unknown" 亂碼)
+                if (!/^\d{1,5}$/.test(rowId)) continue;
+
+                // 鐵門 2：L 欄成交價必須是純數字！(徹底殺死 NT$ get:w() 亂碼)
+                if (!/^\d+(\.\d+)?$/.test(rawPrice)) continue;
+
+                // 鐵門 3：車名不能包含任何 HTML/JS 語法符號
+                if (!carName || /[{}();=<>]/.test(carName) || carName.includes('window.') || carName.includes('Object.')) continue;
+
+                const recordKey = `${rowId}_${carName}`;
                 
-                for (let i = 1; i < rows.length; i++) {
-                    const cols = rows[i].map(c => String(c || "").trim());
-                    if (cols.length < 12) continue;
-
-                    const rowId = cols[0] || String(i);
-                    const carName = cols[5];
-                    const priceVal = cols[11];
-
-                    if (!carName || carName === "車款名稱" || carName.includes('function(') || carName.includes('Object.prototype') || carName.includes('https://csp.withgoogle')) continue;
-
-                    const recordKey = `${rowId}_${carName}`;
-                    
-                    let cloudImgUrl = "";
-                    for (let c = 15; c < cols.length; c++) {
-                        if (cols[c] && cols[c].startsWith('http')) {
-                            cloudImgUrl = cols[c];
-                            break;
-                        }
+                let cloudImgUrl = "";
+                for (let c = 15; c < cols.length; c++) {
+                    if (cols[c] && cols[c].startsWith('http') && !cols[c].includes('csp.withgoogle')) {
+                        cloudImgUrl = cols[c];
+                        break;
                     }
-
-                    cloudPricingData.push({
-                        id: rowId,
-                        key: recordKey,
-                        sourcePhoto: cols[1] || "",
-                        pos: cols[2] || "",
-                        category: cols[3] || "其他廠牌",
-                        seriesNum: cols[4] || "",
-                        name: carName,
-                        vehicleType: cols[6] || "",
-                        condition: cols[8] || "",
-                        hasBox: cols[10] || "",
-                        price: priceVal || "0",
-                        desc: cols[14] || "",
-                        image: savedRecordPhotos[recordKey] || cloudImgUrl || ""
-                    });
                 }
 
-                statusEl.textContent = `✅ 雲端同步完成 (${cloudPricingData.length} 筆)`;
+                validList.push({
+                    id: rowId,
+                    key: recordKey,
+                    sourcePhoto: cols[1] || "",
+                    pos: cols[2] || "",
+                    category: cols[3] || "其他廠牌",
+                    seriesNum: cols[4] || "",
+                    name: carName,
+                    vehicleType: cols[6] || "",
+                    condition: cols[8] || "",
+                    hasBox: cols[10] || "",
+                    price: rawPrice,
+                    desc: cols[14] || "",
+                    image: savedRecordPhotos[recordKey] || cloudImgUrl || ""
+                });
+            }
+            return validList;
+        }
+
+        async function loadCloudData() {
+            const statusEl = document.getElementById('sync-status');
+            cloudPricingData = [];
+
+            for (const url of SHEET_URLS) {
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) continue;
+                    const text = await response.text();
+                    const extracted = parseValidRows(text);
+                    if (extracted.length > 0) {
+                        cloudPricingData = extracted;
+                        break;
+                    }
+                } catch (err) {
+                    console.warn("嘗試通道失敗，自動切換下一條通道:", url);
+                }
+            }
+
+            if (cloudPricingData.length > 0) {
+                statusEl.textContent = `✅ 雲端同步完成 (${cloudPricingData.length} 筆純淨資料)`;
                 statusEl.className = "text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-300 font-bold";
-            } catch (error) {
-                console.error("雲端載入失敗:", error);
-                statusEl.textContent = "⚠️ 雲端同步異常";
+            } else {
+                statusEl.textContent = "⚠️ 試算表讀取受阻（請點試算表右上角『共用』設為『知道連結的任何人可檢視』）";
                 statusEl.className = "text-xs text-red-600 bg-red-50 px-2.5 py-1 rounded-lg border border-red-200 font-bold";
+                document.getElementById('search-result').innerHTML = `
+                    <div class="p-4 bg-red-50 border border-red-200 rounded-xl space-y-2">
+                        <p class="text-sm text-red-700 font-bold">⚠️ 您的試算表舊發布連結已失效（回傳了 Google 系統網頁而非表格資料）！</p>
+                        <p class="text-xs text-slate-700">請打開您的「車車成交價紀錄」Google 試算表，做這 1 個動作即可永久修復：</p>
+                        <ol class="list-decimal list-inside text-xs text-slate-700 space-y-1 font-medium">
+                            <li>點擊試算表右上角綠色的 <b>「共用」</b> 按鈕。</li>
+                            <li>將「一般存取權」由「限制」改為 <b>「知道連結的任何人（檢視者）」</b>，然後重新整理本網頁即可！</li>
+                        </ol>
+                    </div>`;
             }
         }
 
@@ -416,6 +457,8 @@
             let rawInput = document.getElementById('search-input').value.trim();
             const resultDiv = document.getElementById('search-result');
             
+            if (cloudPricingData.length === 0) return;
+
             if (!rawInput && currentFilter === 'all') {
                 resultDiv.innerHTML = `<div class="p-4 bg-amber-50 border border-amber-200 rounded-xl"><p class="text-xs text-amber-800 font-bold">💡 提示：請在上方貼上車款照片自動認車，或輸入關鍵字進行模糊搜尋！</p></div>`;
                 return;
@@ -450,13 +493,13 @@
                     if (r > 180 && g > 150 && b < 100) colorCounts['黃']++;
                     else if (r > 180 && g < 90 && b < 90) colorCounts['紅']++;
                     else if (r > 190 && g > 90 && g < 160 && b < 80) colorCounts['橘']++;
-                    else if (g > 140 && r < 120 && b < 120) colorCounts['綠']++;
+                    else if (g > 130 && r < 120 && b < 120) colorCounts['綠']++;
                     else if (b > 150 && r < 110 && g < 140) colorCounts['藍']++;
                     else if (r > 210 && g > 210 && b > 210) colorCounts['白']++;
                     else if (r < 55 && g < 55 && b < 55) colorCounts['黑']++;
                 }
                 const sortedColors = Object.entries(colorCounts).sort((a,b) => b[1] - a[1]);
-                const topColors = sortedColors.filter(c => c[1] > 25).slice(0, 2).map(c => c[0]);
+                const topColors = sortedColors.filter(c => c[1] > 20).slice(0, 2).map(c => c[0]);
                 callback(topColors.length > 0 ? topColors : ['紅', '黃']);
             };
             img.src = base64Str;
@@ -471,7 +514,6 @@
             }
         }
 
-        // 支援雙重驗證模式 (Query Key 與 Bearer Token)
         async function callGeminiWithFallback(apiKey, cleanBase64, prompt) {
             const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.5-flash'];
             let lastError = "";
@@ -519,7 +561,6 @@
 
             aiBox.classList.remove('hidden');
             const apiKey = getGeminiKey();
-
             aiBox.innerHTML = `<div class="text-xs text-indigo-600 font-bold animate-pulse">🤖 正在辨識照片中的模型車款...</div>`;
 
             try {
@@ -527,7 +568,7 @@
                 const prompt = `你是一位精通 Tomica、Disney Cars (汽車總動員)、Mattel、Hot Wheels 的模型車專家。
 請辨識這張照片中的玩具車，並只回傳 JSON 格式：
 {
-  "carName": "最可能的中文與英文車名（例如：閃電麥坤 Lightning McQueen / 克魯茲 Cruz Ramirez / 脫線 Mater / 斯巴魯360）",
+  "carName": "最可能的中文與英文車名（例如：閃電麥坤 Lightning McQueen / 日立挖土機 / 工程車 / 脫線 Mater）",
   "keywords": ["關鍵字1", "關鍵字2", "顏色"]
 }`;
 
@@ -558,7 +599,6 @@
                     throw new Error("格式解析失敗");
                 }
             } catch (err) {
-                console.warn("改用內建影像分析:", err);
                 runLocalFallbackSearch(base64Str);
             }
         }
@@ -566,27 +606,29 @@
         function runLocalFallbackSearch(base64Str) {
             const aiBox = document.getElementById('ai-recognition-box');
             analyzeImageColorsLocal(base64Str, (colors) => {
-                // 根據顏色智慧擴充常見車款關鍵字
+                // 同時涵蓋一般 Tomica 工程車/特殊車 與 Cars 角色車的智慧關鍵字庫
                 const colorRoleMap = {
-                    '黃': ['克魯茲', 'Cruz', '路易吉', 'Luigi', '黃', '工程'],
-                    '紅': ['閃電麥坤', 'McQueen', '消防', '紅'],
-                    '綠': ['奇多', 'Guido', '希克斯', '綠', '鴨'],
-                    '藍': ['莎莉', '韓大夫', '藍', '警'],
-                    '黑': ['傑克森', '風暴', 'Storm', '黑'],
-                    '橘': ['脫線', 'Mater', '橘']
+                    '黃': ['工程車', '挖土機', '砂石車', '克魯茲', '路易吉', '黃'],
+                    '紅': ['消防', '閃電麥坤', '跑車', '紅'],
+                    '綠': ['工程車', '卡車', '奇多', '綠', '鴨'],
+                    '藍': ['警車', '卡車', '藍', '莎莉'],
+                    '黑': ['傑克森', '風暴', '跑車', '黑', '工程車'],
+                    '橘': ['工程車', '脫線', '橘']
                 };
                 let searchKws = [...colors];
                 colors.forEach(c => {
                     if (colorRoleMap[c]) searchKws.push(...colorRoleMap[c]);
                 });
+                // 移除重複字詞
+                searchKws = [...new Set(searchKws)];
 
-                let tagsHtml = searchKws.slice(0, 6).map(k => 
+                let tagsHtml = searchKws.slice(0, 7).map(k => 
                     `<button onclick="document.getElementById('search-input').value='${k}'; searchData();" class="px-2.5 py-1 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 rounded-full text-xs font-bold transition">🔍 ${k}</button>`
                 ).join(' ');
 
                 aiBox.innerHTML = `
                     <div class="text-xs space-y-2">
-                        <div class="text-emerald-700 font-bold text-sm">🎯 影像特徵辨識完成！已自動提取色系與關聯車款：</div>
+                        <div class="text-emerald-700 font-bold text-sm">🎯 影像特徵辨識完成！已自動提取色系與關聯車種：</div>
                         <div class="flex flex-wrap items-center gap-1.5">
                             <span class="text-slate-500">點擊標籤可快速切換：</span> ${tagsHtml}
                         </div>
@@ -603,7 +645,7 @@
             document.getElementById('ai-recognition-box').classList.add('hidden');
             document.getElementById('search-paste-zone').innerHTML = `
                 <span class="font-bold text-sm">👉 點擊此框並按 Ctrl+V 直接貼上車子截圖 / 照片</span>
-                <span class="text-xs text-slate-500 mt-1">系統會自動分析車款特徵、顏色、型號，並從雲端紀錄進行模糊比對！</span>`;
+                <span class="text-xs text-slate-500 mt-1">系統會自動分析車款特徵、顏色、車種，並從雲端紀錄進行模糊比對！</span>`;
             searchData();
         }
 
@@ -616,7 +658,7 @@
             const resultDiv = document.getElementById('search-result');
 
             if (matches.length === 0) {
-                resultDiv.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-xl"><p class="text-xs text-red-700 font-bold">找不到相似車款，請嘗試切換「全部品牌」或直接輸入車名搜尋。</p></div>`;
+                resultDiv.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-xl"><p class="text-xs text-red-700 font-bold">找不到相似車款，請嘗試點擊上方不同的特徵標籤，或直接輸入關鍵字搜尋。</p></div>`;
                 return;
             }
 
