@@ -140,15 +140,15 @@
         <div class="bg-white p-6 rounded-2xl max-w-md w-full shadow-xl space-y-4">
             <h3 class="text-lg font-bold text-slate-800">🤖 設定 Gemini AI 視覺辨識金鑰</h3>
             <p class="text-xs text-slate-600 leading-relaxed">
-                請在 Google AI Studio 列表右側點擊<b>「複製圖示（兩個小方框）」</b>，貼上完整的金鑰（必須是 <b>AIzaSy</b> 開頭、共 39 個英數字元，千萬不要直接複製帶有 <code>...</code> 的縮寫喔！）。
+                已自動支援您的 Google Cloud / API 金鑰（如 <b>AQ.</b> 開頭格式）。請點擊下方按鈕點擊複製完整的 API Key 貼上即可！
             </p>
             <div>
-                <label class="block text-xs font-bold text-slate-600 mb-1">Gemini API Key (AIzaSy...)</label>
-                <input type="text" id="gemini-api-key-input" class="w-full p-2.5 border rounded-lg text-sm font-mono" placeholder="AIzaSy...">
+                <label class="block text-xs font-bold text-slate-600 mb-1">API Key</label>
+                <input type="text" id="gemini-api-key-input" class="w-full p-2.5 border rounded-lg text-sm font-mono" placeholder="AQ.Ab8RN...">
             </div>
             <div class="flex justify-end gap-2 pt-2">
                 <button onclick="document.getElementById('ai-key-modal').classList.add('hidden')" class="px-4 py-2 bg-slate-200 text-slate-700 text-sm rounded-lg font-bold">取消</button>
-                <button onclick="saveAiKey()" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg font-bold shadow">儲存並測試</button>
+                <button onclick="saveAiKey()" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg font-bold shadow">儲存並啟用 AI</button>
             </div>
         </div>
     </div>
@@ -212,12 +212,9 @@
 
         function saveAiKey() {
             const key = document.getElementById('gemini-api-key-input').value.trim();
-            if (key && (!key.startsWith('AIza') || key.includes('.'))) {
-                alert("⚠️ 金鑰格式看起來不太對喔！\n\n您可能複製到了縮寫（例如 ...BDeA）。請回到 Google AI Studio，點擊該列右邊的「複製圖示（兩個重疊小方框）」，貼上以 AIzaSy 開頭的完整金鑰！");
-                return;
-            }
             localStorage.setItem('ruden_gemini_api_key', key);
             document.getElementById('ai-key-modal').classList.add('hidden');
+            alert("✅ API Key 已儲存！");
             if (searchImageBase64) triggerAiImageSearch(searchImageBase64);
         }
 
@@ -287,9 +284,6 @@
             reader.readAsDataURL(file);
         }
 
-        // ==========================================================
-        // 修正版 CSV 讀取：確保 670 筆正常資料 100% 載入，同時過濾程式碼亂碼
-        // ==========================================================
         async function loadCloudData() {
             const statusEl = document.getElementById('sync-status');
             try {
@@ -308,7 +302,6 @@
                     const carName = cols[5];
                     const priceVal = cols[11];
 
-                    // 排除標題列或 Google 腳本亂碼，但 100% 放行正常車款紀錄
                     if (!carName || carName === "車款名稱" || carName.includes('function(') || carName.includes('Object.prototype') || carName.includes('https://csp.withgoogle')) continue;
 
                     const recordKey = `${rowId}_${carName}`;
@@ -379,7 +372,6 @@
             searchData();
         }
 
-        // 模糊比對計分引擎（包含名稱、品牌、車種、備註）
         function fuzzyMatchRecords(keywordsArray) {
             let brandFiltered = cloudPricingData.filter(item => isStrictCategoryMatch(item.category, currentFilter));
             
@@ -435,7 +427,6 @@
             displaySearchResults(combined.slice(0, 30), `模糊比對關鍵字：「${rawInput}」`);
         }
 
-        // 內建免金鑰「影像色彩與特徵分析引擎」（當無金鑰或金鑰失敗時自動救援）
         function analyzeImageColorsLocal(base64Str, callback) {
             const img = new Image();
             img.onload = function() {
@@ -472,7 +463,6 @@
             }
         }
 
-        // 自動依序嘗試多個 Gemini 模型，確保免費金鑰 100% 打得通
         async function callGeminiWithFallback(apiKey, cleanBase64, prompt) {
             const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.5-flash'];
             let lastError = "";
@@ -513,28 +503,27 @@
                     <img src="${base64Str}" class="h-20 w-20 object-cover rounded-xl border-2 border-indigo-400 shadow">
                     <div class="text-left">
                         <div class="text-indigo-700 font-bold text-sm">📸 搜尋照片已貼上！</div>
-                        <div class="text-xs text-slate-500">正在辨識照片中的車款並比對 670 筆成交紀錄...</div>
+                        <div class="text-xs text-slate-500">正在辨識照片中的車款並比對成交紀錄...</div>
                     </div>
                 </div>`;
 
             aiBox.classList.remove('hidden');
             const apiKey = getGeminiKey();
 
-            // 若未設定金鑰，直接啟動內建色彩特徵比對
             if (!apiKey) {
-                runLocalFallbackSearch(base64Str, "尚未設定 AI 金鑰，已自動使用「內建色彩與特徵引擎」為您撈出相似車款！");
+                runLocalFallbackSearch(base64Str, "尚未設定 API Key，已自動使用內建色彩特徵引擎為您撈出相似車款！");
                 return;
             }
 
-            aiBox.innerHTML = `<div class="text-xs text-indigo-600 font-bold animate-pulse">🤖 AI 正在辨識照片中的模型車款（品牌、角色/車型、塗裝特徵）...</div>`;
+            aiBox.innerHTML = `<div class="text-xs text-indigo-600 font-bold animate-pulse">🤖 AI 正在辨識照片中的模型車款...</div>`;
 
             try {
                 const cleanBase64 = base64Str.split(',')[1];
-                const prompt = `你是一位精通 Tomica (多美小汽車)、Disney Cars (汽車總動員)、Mattel、Hot Wheels (風火輪) 的模型車鑑定專家。
-請辨識這張照片中的玩具車（若有多台請一併列出），並只回傳 JSON 格式：
+                const prompt = `你是一位精通 Tomica、Disney Cars (汽車總動員)、Mattel、Hot Wheels 的模型車專家。
+請辨識這張照片中的玩具車，並只回傳 JSON 格式：
 {
-  "carName": "最可能的中文與英文車名（例如：閃電麥坤 Lightning McQueen / 克魯茲 Cruz Ramirez / 路易吉 Luigi / 脫線 Mater / 斯巴魯360）",
-  "keywords": ["角色或車名關鍵字1", "關鍵字2", "顏色(如:黃/紅/綠/藍)", "Cars"]
+  "carName": "最可能的中文與英文車名（例如：閃電麥坤 Lightning McQueen / 脫線 Mater / 斯巴魯360）",
+  "keywords": ["關鍵字1", "關鍵字2", "顏色"]
 }`;
 
                 const rawText = await callGeminiWithFallback(apiKey, cleanBase64, prompt);
@@ -561,18 +550,18 @@
                     const matches = fuzzyMatchRecords(allKeywords);
                     displaySearchResults(matches.slice(0, 24), `🤖 AI 視覺模糊比對：「${parsed.carName}」的相似成交車款`);
                 } else {
-                    throw new Error("AI 回傳格式無法解析");
+                    throw new Error("格式解析失敗");
                 }
             } catch (err) {
                 console.error(err);
-                runLocalFallbackSearch(base64Str, `AI 金鑰連線異常 (${err.message})，已自動切換「內建塗裝色彩比對」為您列出相似車款！`);
+                runLocalFallbackSearch(base64Str, `AI 呼叫異常 (${err.message})，已自動切換內建塗裝比對！`);
             }
         }
 
         function runLocalFallbackSearch(base64Str, noticeMsg) {
             const aiBox = document.getElementById('ai-recognition-box');
             analyzeImageColorsLocal(base64Str, (colors) => {
-                const searchKws = [...colors, 'Cars', '閃電麥坤', '克魯茲'];
+                const searchKws = [...colors, 'Cars', '閃電麥坤'];
                 let tagsHtml = colors.map(c => 
                     `<button onclick="document.getElementById('search-input').value='${c}'; searchData();" class="px-2.5 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-bold">🎨 主色調：${c}色系</button>`
                 ).join(' ');
@@ -581,8 +570,7 @@
                     <div class="text-xs space-y-1.5">
                         <div class="text-amber-700 font-bold">💡 ${noticeMsg}</div>
                         <div class="flex flex-wrap items-center gap-2">
-                            <span>偵測到照片特徵：</span> ${tagsHtml}
-                            <button onclick="openAiKeyModal()" class="ml-auto underline text-indigo-600 font-bold">重新檢查 API Key</button>
+                            <span>偵測到特徵：</span> ${tagsHtml}
                         </div>
                     </div>`;
                 const matches = fuzzyMatchRecords(searchKws);
@@ -610,7 +598,7 @@
             const resultDiv = document.getElementById('search-result');
 
             if (matches.length === 0) {
-                resultDiv.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-xl"><p class="text-xs text-red-700 font-bold">在「${currentFilter === 'all' ? '全部品牌' : currentFilter}」中找不到相似的車款，建議減少關鍵字或切換為「全部品牌」重試。</p></div>`;
+                resultDiv.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-xl"><p class="text-xs text-red-700 font-bold">找不到相似車款，請嘗試切換「全部品牌」或直接輸入車名搜尋。</p></div>`;
                 return;
             }
 
